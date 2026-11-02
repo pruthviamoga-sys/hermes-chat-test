@@ -7,12 +7,15 @@
     "start": "next start"
   },
   "dependencies": {
+    "@ai-sdk/openai-compatible": "^3.0.82",
+    "@ai-sdk/react": "^4.0.163",
+    "ai": "^7.0.159",
     "next": "16.3.8",
     "react": "19.2.8",
     "react-dom": "19.2.8"
   },
   "devDependencies": {
-    "@types/node": "25.9.5",
+    "@types/node": "^25.9.5",
     "@types/react": "19.2.18",
     "@types/react-dom": "19.2.4",
     "typescript": "5.9.3"
