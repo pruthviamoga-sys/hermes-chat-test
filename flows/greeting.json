@@ -1,0 +1,19 @@
+{
+  "id": "greeting",
+  "start": "ask_topic",
+  "steps": {
+    "ask_topic": {
+      "type": "question",
+      "text": "What would you like to do?",
+      "options": [
+        { "label": "See a welcome message", "next": "welcome" },
+        { "label": "Start over", "next": "ask_topic" }
+      ]
+    },
+    "welcome": {
+      "type": "message",
+      "text": "Welcome! This flow runs without AI. Choose Start over to go back.",
+      "next": "ask_topic"
+    }
+  }
+}
