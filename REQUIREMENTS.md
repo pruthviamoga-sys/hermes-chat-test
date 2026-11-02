@@ -1,14 +1,15 @@
 # Hermes flows: requirements and status
 
-Last updated: 2026-11-02
+Last updated: 2026-11-02 (flow 1 achieved)
 
 Status key: NOT STARTED / IN PROGRESS / ACHIEVED / NEEDS TESTING
 
 ## Flow 1: Fixed bot flow, no AI
-Status: NOT STARTED
-- Flow defined in JSON (flows/greeting.json created)
-- Page reads the JSON and renders steps with buttons (next step)
-- Open: render page, test button navigation
+Status: ACHIEVED
+- Flow defined in JSON (flows/greeting.json)
+- Page at /flow renders steps and buttons from the JSON; buttons move between steps (tested)
+- UI action: "Show the time" button runs a fixed action in the page and logs the result (tested)
+- Open: more actions and richer UI rendering if Krishna wants them
 
 ## Flow 2: Standard AI chat using AI
 Status: ACHIEVED (with Hermes as the model)
