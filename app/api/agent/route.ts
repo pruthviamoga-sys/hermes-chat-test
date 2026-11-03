@@ -1,6 +1,13 @@
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
+  const { task, agent = "hermes" } = await req.json();
+
+  // Local test agent: no network call, so it works without Hermes.
+  if (agent === "echo") {
+    return NextResponse.json({ answer: `Echo: ${task}` });
+  }
+
   const base = process.env.HERMES_API_URL;
   const key = process.env.HERMES_API_KEY;
   if (!base || !key) {
@@ -9,8 +16,6 @@ export async function POST(req: Request) {
       { status: 500 },
     );
   }
-
-  const { task } = await req.json();
 
   try {
     const res = await fetch(`${base.replace(/\/$/, "")}/v1/chat/completions`, {

@@ -10,19 +10,47 @@
       "type": "question",
       "text": "Which agent should run your task?",
       "options": [
-        { "label": "Hermes", "next": "run_hermes" },
+        { "label": "Hermes", "next": "approve_hermes" },
+        { "label": "Echo (test)", "next": "approve_echo" },
         { "label": "Start over", "next": "intro" }
+      ]
+    },
+    "approve_hermes": {
+      "type": "question",
+      "text": "Run Hermes on this task?",
+      "options": [
+        { "label": "Approve", "next": "run_hermes" },
+        { "label": "Reject", "next": "choose_agent" }
       ]
     },
     "run_hermes": {
       "type": "agent",
       "agent": "hermes",
       "task": "Give a one-sentence status update.",
-      "next": "show_result"
+      "next": "show_hermes"
     },
-    "show_result": {
+    "show_hermes": {
       "type": "result",
       "from": "run_hermes",
+      "next": "choose_agent"
+    },
+    "approve_echo": {
+      "type": "question",
+      "text": "Run the Echo test agent?",
+      "options": [
+        { "label": "Approve", "next": "run_echo" },
+        { "label": "Reject", "next": "choose_agent" }
+      ]
+    },
+    "run_echo": {
+      "type": "agent",
+      "agent": "echo",
+      "task": "Test message from the flow.",
+      "next": "show_echo"
+    },
+    "show_echo": {
+      "type": "result",
+      "from": "run_echo",
       "next": "choose_agent"
     }
   }
