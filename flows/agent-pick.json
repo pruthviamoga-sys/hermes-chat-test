@@ -1,0 +1,29 @@
+{
+  "start": "intro",
+  "steps": {
+    "intro": {
+      "type": "message",
+      "text": "Hi. Pick an agent to run a task.",
+      "next": "choose_agent"
+    },
+    "choose_agent": {
+      "type": "question",
+      "text": "Which agent should run your task?",
+      "options": [
+        { "label": "Hermes", "next": "run_hermes" },
+        { "label": "Start over", "next": "intro" }
+      ]
+    },
+    "run_hermes": {
+      "type": "agent",
+      "agent": "hermes",
+      "task": "Give a one-sentence status update.",
+      "next": "show_result"
+    },
+    "show_result": {
+      "type": "result",
+      "from": "run_hermes",
+      "next": "choose_agent"
+    }
+  }
+}
