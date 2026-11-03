@@ -16,6 +16,30 @@ type Step = {
 
 const steps = flow.steps as Record<string, Step>;
 
+function prompt(s: Step): string {
+  if (s.type === "agent") return `Ready to run ${s.agent}. Click Run agent.`;
+  if (s.type === "result") return "Here is the result:";
+  return s.text ?? "";
+}
+
+function ResultCard({ title, body }: { title: string; body: string }) {
+  return (
+    <div
+      style={{
+        border: "1px solid #ccc",
+        borderRadius: 8,
+        padding: 12,
+        background: "#fff",
+        whiteSpace: "pre-wrap",
+        marginBottom: 8,
+      }}
+    >
+      <div style={{ fontWeight: "bold", marginBottom: 8 }}>{title}</div>
+      {body || "No answer."}
+    </div>
+  );
+}
+
 export default function AgentFlowPage() {
   const [current, setCurrent] = useState(flow.start);
   const [history, setHistory] = useState<{ from: "bot" | "user"; text: string }[]>([]);
@@ -24,9 +48,8 @@ export default function AgentFlowPage() {
   const step = steps[current];
 
   function describe(s: Step): string {
-    if (s.type === "agent") return `Ready to run ${s.agent}. Click Run agent.`;
     if (s.type === "result") return answer || "No answer yet.";
-    return s.text ?? "";
+    return prompt(s);
   }
 
   function advance(next: string, userLabel?: string) {
@@ -44,7 +67,7 @@ export default function AgentFlowPage() {
       const res = await fetch("/api/agent", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ task: s.task }),
+        body: JSON.stringify({ agent: s.agent, task: s.task }),
       });
       const data = await res.json();
       setAnswer(res.ok ? data.answer : `Error: ${data.error}`);
@@ -63,7 +86,7 @@ export default function AgentFlowPage() {
       ))}
       <div>
         <p>
-          <b>Bot:</b> {describe(step)}
+          <b>Bot:</b> {prompt(step)}
         </p>
         {step.type === "question" ? (
           step.options!.map((o) => (
@@ -75,6 +98,11 @@ export default function AgentFlowPage() {
           <button disabled={busy} onClick={() => runAgent(step)}>
             {busy ? "Running..." : "Run agent"}
           </button>
+        ) : step.type === "result" ? (
+          <>
+            <ResultCard title={`Result from ${step.from}`} body={answer} />
+            <button onClick={() => advance(step.next!)}>Continue</button>
+          </>
         ) : (
           <button onClick={() => advance(step.next!)}>Continue</button>
         )}
